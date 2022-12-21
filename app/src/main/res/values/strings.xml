@@ -13,4 +13,6 @@
     <string name="Action">Action</string>
     <string name="Name">Name</string>
     <string name="Save">Save</string>
+    <string name="message">Message from server.....</string>
+    <string name="select">Select</string>
 </resources>
