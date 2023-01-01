@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
     String selectedImagePath;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    String ipv4AddressAndPort = "118.139.29.130:5000";
+    String ipv4AddressAndPort = "118.138.90.123:5000";
     RequestBody requestBody;
     String postUrl;
     String getUrl;
@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                                Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
 
