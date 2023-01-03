@@ -95,6 +95,7 @@ public class HomeFragment extends Fragment {
     String postUrl;
     String getUrl;
     TextView responseText;
+    List<Shortcut> shortcutList = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -146,8 +147,8 @@ public class HomeFragment extends Fragment {
         SharedPreferences sharedPref = getContext().getSharedPreferences("ACTIONS", 0);
         getUrl = sharedPref.getString("URL", null);
 
-        List<Shortcut> shortcutList = new ArrayList<>();
-        shortcutList.add(new Shortcut("Turn on camera", "Action 1"));
+
+        shortcutList.add(new Shortcut("/storage/emulated/0/Download/recording2.mp4", "recording2.mp4"));
         shortcutList.add(new Shortcut("Open android store", "Store opener"));
         shortcutList.add(new Shortcut("Order Chicago pizza","Chicago Pizza"));
         shortcutList.add(new Shortcut("Back to main page", "Main"));
@@ -313,6 +314,12 @@ public class HomeFragment extends Fragment {
 //        RequestBody postBody = new FormBody.Builder().add("value","hello").build();
 //        postRequest(postUrl, postBody);
         System.out.println(selectedImagePath);
+        String[] pathParts = selectedImagePath.split("/");
+        System.out.println("this is vid name>>>>>>>");
+        String vidName = pathParts[pathParts.length - 1];
+        System.out.println(vidName);
+
+        shortcutList.add(new Shortcut(vidName, selectedImagePath));
         if (selectedImagePath != null) {
             File file = new File(selectedImagePath);
             try {
