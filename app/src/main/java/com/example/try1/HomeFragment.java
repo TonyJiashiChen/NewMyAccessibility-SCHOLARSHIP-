@@ -87,19 +87,24 @@ public class HomeFragment extends Fragment {
 
     //attributes
     private static final int PERMISSION_REQUEST_CODE = 1;
-    String selectedImagePath;
+    public static String selectedImagePath;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    String ipv4AddressAndPort = "118.138.90.123:5000";
-    RequestBody requestBody;
-    String postUrl;
+    static String ipv4AddressAndPort = "118.138.90.123:5000";
+    static RequestBody requestBody;
+    static String postUrl;
     String getUrl;
     TextView responseText;
-    List<Shortcut> shortcutList = new ArrayList<>();
+    static List<Shortcut> shortcutList = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
     }
+
+    public static String getSelectedImagePath() {
+        return selectedImagePath;
+    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -178,6 +183,8 @@ public class HomeFragment extends Fragment {
                 uploadVideo(view);
             }
         });
+
+
     }
 
 
@@ -370,6 +377,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+                if(getActivity() == null)
+                    return;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

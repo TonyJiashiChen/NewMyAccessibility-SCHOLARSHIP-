@@ -14,12 +14,15 @@ import com.example.try1.HomeFragment;
 import com.example.try1.R;
 import com.example.try1.model.Shortcut;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.ShortcutViewHolder> {
 
     Context context;
     List<Shortcut> shortcutList;
+
+    static HomeFragment newHome = new HomeFragment();
 
     public ShortcutAdapter(Context context, List<Shortcut> shortcutList) {
         this.context = context;
@@ -74,6 +77,17 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
             //shortcutImage = itemView.findViewById(R.id.shortcut_image);
             name = itemView.findViewById(R.id.name);
             restorantName = itemView.findViewById(R.id.restorant_name);
+
+
+            itemView.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    HomeFragment.selectedImagePath = (String) name.getText();
+                    System.out.println(HomeFragment.selectedImagePath);
+                    newHome.uploadVideo(view);
+                }
+            });
+
         }
     }
 }
