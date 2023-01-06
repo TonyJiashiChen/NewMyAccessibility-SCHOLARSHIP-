@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
     public static String selectedImagePath;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    static String ipv4AddressAndPort = "118.138.90.123:5000";
+    static String ipv4AddressAndPort = "118.139.29.130:5000";
     static RequestBody requestBody;
     static String postUrl;
     String getUrl;
