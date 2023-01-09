@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView shortcutRecycler;
     ShortcutAdapter shortcutAdapter;
+    DatabaseHelper myDB;
 
     private Context globalContext = null;
 
@@ -152,8 +153,10 @@ public class HomeFragment extends Fragment {
         SharedPreferences sharedPref = getContext().getSharedPreferences("ACTIONS", 0);
         getUrl = sharedPref.getString("URL", null);
 
+        myDB = new DatabaseHelper(getContext());
 
-        shortcutList.add(new Shortcut("/storage/emulated/0/Download/recording2.mp4", "recording2.mp4"));
+        storeData();
+
         shortcutList.add(new Shortcut("Open android store", "Store opener"));
         shortcutList.add(new Shortcut("Order Chicago pizza","Chicago Pizza"));
         shortcutList.add(new Shortcut("Back to main page", "Main"));
@@ -180,11 +183,27 @@ public class HomeFragment extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadVideo(view);
+                String[] pathParts = selectedImagePath.split("/");
+                String vidName = pathParts[pathParts.length - 1];
+
+                myDB = new DatabaseHelper(getContext());
+                myDB.addShortcut(vidName, selectedImagePath);
+                //uploadVideo(view);
             }
         });
 
 
+    }
+
+    void storeData() {
+        Cursor cursor = myDB.readAllData();
+        if (cursor.getCount() == 0) {
+            Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                shortcutList.add(new Shortcut(cursor.getString(2), cursor.getString(1)));
+            }
+        }
     }
 
 
