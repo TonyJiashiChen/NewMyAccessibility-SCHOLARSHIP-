@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -48,6 +49,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_NAME, name);
         cv.put(COLUMN_ADDRESS, address);
-        db.insert(TABLE_NAME, null, cv);
+        long result = db.insert(TABLE_NAME, null, cv);
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show();
+        }
     }
 }
