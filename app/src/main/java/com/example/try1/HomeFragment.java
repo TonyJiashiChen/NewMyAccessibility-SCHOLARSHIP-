@@ -96,7 +96,8 @@ public class HomeFragment extends Fragment {
     static String postUrl;
     String getUrl;
     TextView responseText;
-    static List<Shortcut> shortcutList = new ArrayList<>();
+    List<Shortcut> shortcutList = new ArrayList<>();
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -148,6 +149,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
+        shortcutList.clear();
 
         responseText = view.findViewById(R.id.responseText);
         SharedPreferences sharedPref = getContext().getSharedPreferences("ACTIONS", 0);
