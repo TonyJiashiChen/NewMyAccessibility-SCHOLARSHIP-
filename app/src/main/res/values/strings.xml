@@ -16,4 +16,5 @@
     <string name="message">Message from server.....</string>
     <string name="select">Select</string>
     <string name="accessibility_service_description">description</string>
+    <string name="food">food</string>
 </resources>

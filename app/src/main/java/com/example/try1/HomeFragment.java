@@ -42,7 +42,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.try1.adapter.HomeExploreAdapter;
 import com.example.try1.adapter.ShortcutAdapter;
+import com.example.try1.model.Explore;
 import com.example.try1.model.Shortcut;
 
 import java.io.File;
@@ -77,7 +79,9 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     RecyclerView shortcutRecycler;
+    RecyclerView homeExploreRecycler;
     ShortcutAdapter shortcutAdapter;
+    HomeExploreAdapter homeExploreAdapter;
     DatabaseHelper myDB;
 
     private Context globalContext = null;
@@ -91,12 +95,13 @@ public class HomeFragment extends Fragment {
     public static String selectedImagePath;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    static String ipv4AddressAndPort = "118.139.29.130:5000";
+    static String ipv4AddressAndPort = "118.138.90.123:5000";
     static RequestBody requestBody;
     static String postUrl;
     String getUrl;
     TextView responseText;
     List<Shortcut> shortcutList = new ArrayList<>();
+    List<Explore> homeExploreList = new ArrayList<>();
 
 
     public HomeFragment() {
@@ -159,6 +164,20 @@ public class HomeFragment extends Fragment {
 
         storeData();
 
+
+        homeExploreList.add(new Explore("Turn on camera", "Action 1", R.drawable.asiafood1));
+        homeExploreList.add(new Explore("Open android store", "Store opener", R.drawable.asiafood2));
+        homeExploreList.add(new Explore("Order Chicago pizza from domino's","Chicago Pizza", R.drawable.asiafood1));
+
+        homeExploreRecycler = view.findViewById(R.id.home_explore_recycler);
+        RecyclerView.LayoutManager homeLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        homeExploreRecycler.setLayoutManager(homeLayoutManager);
+        homeExploreAdapter = new HomeExploreAdapter(getContext(), homeExploreList);
+        homeExploreRecycler.setAdapter(homeExploreAdapter);
+
+
+
+
         shortcutList.add(new Shortcut("Open android store", "Store opener"));
         shortcutList.add(new Shortcut("Order Chicago pizza","Chicago Pizza"));
         shortcutList.add(new Shortcut("Back to main page", "Main"));
@@ -190,7 +209,7 @@ public class HomeFragment extends Fragment {
 
                 myDB = new DatabaseHelper(getContext());
                 myDB.addShortcut(vidName, selectedImagePath);
-                //uploadVideo(view);
+                uploadVideo(view);
             }
         });
 
