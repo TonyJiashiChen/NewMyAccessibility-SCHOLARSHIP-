@@ -41,6 +41,8 @@ public class MyAccessibilityService extends AccessibilityService {
     int currentActionIndex = 0;
     boolean paused = false;
 
+    HomeFragment homeFragment;
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
     }
@@ -315,8 +317,11 @@ public class MyAccessibilityService extends AccessibilityService {
                                 Log.i("detected_actions", "Similarity = " + similarity);
                                 Log.i("detected_actions", "                  ");
 
+                                System.out.println("similarity issssssssssss:" + similarity);
+
                                 if (similarity < 85) {
-                                    Toast.makeText(getApplicationContext(), "Wrong screen", Toast.LENGTH_LONG).show();
+                                    System.out.println("we are on the wrong screen");
+                                    Toast.makeText(homeFragment.getActivity().getApplicationContext(), "Wrong screen", Toast.LENGTH_LONG).show(); // debugging
                                     // if similarity less than 90 then
                                     //System.out.println("Wrong tab");
                                     similarCharacterCount = lcsCount(previousScreenContent, content);
