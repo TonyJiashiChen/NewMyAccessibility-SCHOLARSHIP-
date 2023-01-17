@@ -3,6 +3,7 @@ package com.example.try1;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Path;
@@ -19,6 +20,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +44,24 @@ public class MyAccessibilityService extends AccessibilityService {
     int currentActionIndex = 0;
     boolean paused = false;
 
+    private Context context;
+
     HomeFragment homeFragment;
+
+
+    public MyAccessibilityService() {
+
+    }
+
+    public MyAccessibilityService(FrameLayout mLayout, float currentScreenWidth, float currentScreenHeight, int currentActionIndex, boolean paused, Context context, HomeFragment homeFragment) {
+        this.mLayout = mLayout;
+        this.currentScreenWidth = currentScreenWidth;
+        this.currentScreenHeight = currentScreenHeight;
+        this.currentActionIndex = currentActionIndex;
+        this.paused = paused;
+        this.context = context;
+        this.homeFragment = homeFragment;
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -321,7 +341,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
                                 if (similarity < 85) {
                                     System.out.println("we are on the wrong screen");
-                                    Toast.makeText(homeFragment.getActivity().getApplicationContext(), "Wrong screen", Toast.LENGTH_LONG).show(); // debugging
+                                    Toast.makeText(context, "Wrong screen", Toast.LENGTH_LONG).show(); // debugging
                                     // if similarity less than 90 then
                                     //System.out.println("Wrong tab");
                                     similarCharacterCount = lcsCount(previousScreenContent, content);
