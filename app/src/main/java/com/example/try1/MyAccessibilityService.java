@@ -3,7 +3,9 @@ package com.example.try1;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Path;
@@ -355,8 +357,25 @@ public class MyAccessibilityService extends AccessibilityService {
                                     System.out.println("j isssss" + j);
                                     if (j == 2) {
                                         Toast.makeText(MyAccessibilityService.this, "Unable to do the action correctly, please help us do it", Toast.LENGTH_LONG).show();
+
                                         Toast.makeText(MyAccessibilityService.this, "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
 //                                        Toast.makeText(MyAccessibilityService.this,"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
+
+
+                                        AlertDialog alertDialog = new AlertDialog.Builder(MyAccessibilityService.this).create();
+                                        alertDialog.setTitle("Alert");
+                                        alertDialog.setMessage("The following action will be recorded");
+                                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                }
+                                        );
+
+                                        alertDialog.show();
+
                                         paused = true;
                                         currentActionIndex = i + 1;
                                     }
