@@ -38,13 +38,14 @@ import java.util.Locale;
 
 public class MyAccessibilityService extends AccessibilityService {
 
+    Context context;
     FrameLayout mLayout;
     float currentScreenWidth;
     float currentScreenHeight;
     int currentActionIndex = 0;
     boolean paused = false;
 
-    private Context context;
+
 
     HomeFragment homeFragment;
 
@@ -53,14 +54,8 @@ public class MyAccessibilityService extends AccessibilityService {
 
     }
 
-    public MyAccessibilityService(FrameLayout mLayout, float currentScreenWidth, float currentScreenHeight, int currentActionIndex, boolean paused, Context context, HomeFragment homeFragment) {
-        this.mLayout = mLayout;
-        this.currentScreenWidth = currentScreenWidth;
-        this.currentScreenHeight = currentScreenHeight;
-        this.currentActionIndex = currentActionIndex;
-        this.paused = paused;
+    public MyAccessibilityService(Context context) {
         this.context = context;
-        this.homeFragment = homeFragment;
     }
 
     @Override
@@ -331,7 +326,7 @@ public class MyAccessibilityService extends AccessibilityService {
                                     similarity = Math.max(similarCharacterCount * 100 / result.length(), similarCharacterCount * 100 / content.length());
                                 }
                                 System.out.println("Similarity wtih current page= " + similarity + "%\n");
-                                Toast.makeText(getApplicationContext(), "Taped on" + findContent(targetList.get(j), ""), Toast.LENGTH_LONG);
+                                Toast.makeText(MyAccessibilityService.this, "Taped on" + findContent(targetList.get(j), ""), Toast.LENGTH_LONG);
 
                                 Log.i("detected_actions", "Taped on " + findContent(targetList.get(j), ""));
                                 Log.i("detected_actions", "Similarity = " + similarity);
@@ -341,7 +336,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
                                 if (similarity < 85) {
                                     System.out.println("we are on the wrong screen");
-                                    Toast.makeText(context, "Wrong screen", Toast.LENGTH_LONG).show(); // debugging
+                                    Toast.makeText(MyAccessibilityService.this, "Wrong screen", Toast.LENGTH_LONG).show(); // debugging
                                     // if similarity less than 90 then
                                     //System.out.println("Wrong tab");
                                     similarCharacterCount = lcsCount(previousScreenContent, content);
@@ -357,10 +352,11 @@ public class MyAccessibilityService extends AccessibilityService {
                                         performGlobalAction(GLOBAL_ACTION_BACK);
                                     }
                                     Thread.sleep(3000);
+                                    System.out.println("j isssss" + j);
                                     if (j == 2) {
-                                        Toast.makeText(getApplicationContext(), "Unable to do the action correctly, help us do it", Toast.LENGTH_LONG).show();
-                                        Toast.makeText(getApplicationContext(), "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
-//                                        Toast.makeText(getApplicationContext(),"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
+                                        Toast.makeText(MyAccessibilityService.this, "Unable to do the action correctly, please help us do it", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MyAccessibilityService.this, "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
+//                                        Toast.makeText(MyAccessibilityService.this,"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
                                         paused = true;
                                         currentActionIndex = i + 1;
                                     }
@@ -417,7 +413,7 @@ public class MyAccessibilityService extends AccessibilityService {
                         }
                     }
                     if(!paused) {
-                        Toast.makeText(getApplicationContext(), "All actions done successfully", Toast.LENGTH_LONG);
+                        Toast.makeText(MyAccessibilityService.this, "All actions done successfully", Toast.LENGTH_LONG);
                         Log.i("tap", "Done successfully");
 
                     }
