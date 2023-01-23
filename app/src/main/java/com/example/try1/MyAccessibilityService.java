@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Path;
@@ -47,7 +48,7 @@ public class MyAccessibilityService extends AccessibilityService {
     int currentActionIndex = 0;
     boolean paused = false;
 
-
+    AlertDialogActivity alert;
 
     HomeFragment homeFragment;
 
@@ -361,20 +362,9 @@ public class MyAccessibilityService extends AccessibilityService {
                                         Toast.makeText(MyAccessibilityService.this, "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
 //                                        Toast.makeText(MyAccessibilityService.this,"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
 
-
-                                        AlertDialog alertDialog = new AlertDialog.Builder(MyAccessibilityService.this).create();
-                                        alertDialog.setTitle("Alert");
-                                        alertDialog.setMessage("The following action will be recorded");
-                                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        dialogInterface.dismiss();
-                                                    }
-                                                }
-                                        );
-
-                                        alertDialog.show();
+                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
+                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        getApplication().startActivity(dialogIntent);
 
                                         paused = true;
                                         currentActionIndex = i + 1;

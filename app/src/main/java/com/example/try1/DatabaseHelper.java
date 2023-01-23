@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private Context context;
+    public Context context;
     private static final String DATABASE_NAME = "Shortcut.db";
     private static final int DATABASE_VERSION = 1;
 
