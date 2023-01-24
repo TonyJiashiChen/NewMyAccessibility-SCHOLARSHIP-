@@ -33,6 +33,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -215,6 +216,10 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+
+
+
 
     void storeData() {
         Cursor cursor = myDB.readAllData();

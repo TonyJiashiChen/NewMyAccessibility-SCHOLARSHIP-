@@ -39,7 +39,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 
-public class MyAccessibilityService extends AccessibilityService {
+public class MyAccessibilityService extends AccessibilityService{
 
     Context context;
     FrameLayout mLayout;
@@ -238,6 +238,10 @@ public class MyAccessibilityService extends AccessibilityService {
 
                     SharedPreferences sharedPref = getSharedPreferences("ACTIONS", 0);
                     String detectedActions = sharedPref.getString("ACTION_RESULT", "default");
+
+                    System.out.println("this is sharepref " + sharedPref);
+                    System.out.println("this is share get string" + detectedActions);
+
                     Log.i("detectedActions", detectedActions);
                     AssetManager assetManager = getAssets();
                     InputStream is = assetManager.open("action.json");
@@ -362,9 +366,11 @@ public class MyAccessibilityService extends AccessibilityService {
                                         Toast.makeText(MyAccessibilityService.this, "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
 //                                        Toast.makeText(MyAccessibilityService.this,"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
 
-                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
-                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        getApplication().startActivity(dialogIntent);
+                                        // alert dialog
+
+//                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
+//                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        getApplication().startActivity(dialogIntent);
 
                                         paused = true;
                                         currentActionIndex = i + 1;
