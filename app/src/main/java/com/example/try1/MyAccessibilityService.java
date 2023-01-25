@@ -48,10 +48,12 @@ public class MyAccessibilityService extends AccessibilityService{
     int currentActionIndex = 0;
     boolean paused = false;
 
+    public static String actionHint;
+
     AlertDialogActivity alert;
 
     HomeFragment homeFragment;
-
+    MainActivity mainActivity;
 
     public MyAccessibilityService() {
 
@@ -78,6 +80,7 @@ public class MyAccessibilityService extends AccessibilityService{
             }
         });
     }
+
 
 //    private void configureVolumeButton() {
 //        Button volumeUpButton = (Button) mLayout.findViewById(R.id.volume_up);
@@ -283,6 +286,7 @@ public class MyAccessibilityService extends AccessibilityService{
                             JSONObject tap = (JSONObject) action.getJSONArray("taps").get(0);
                             float x = tap.getInt("x");
                             float y = tap.getInt("y");
+                            /////////
                             if (currentScreenWidth == 1080 && currentScreenHeight == 1920)
                             {
 
@@ -290,8 +294,8 @@ public class MyAccessibilityService extends AccessibilityService{
                             }
                             else
                             {
-                                x = ((x/1080)*currentScreenWidth);
-                                y = ((y/1920)*currentScreenHeight);
+                                //x = ((x/1080)*currentScreenWidth);
+                                //y = ((y/1920)*currentScreenHeight);
                                 System.out.println("x: " + x + " y: " + y);
                             }
 
@@ -359,18 +363,19 @@ public class MyAccessibilityService extends AccessibilityService{
                                         performGlobalAction(GLOBAL_ACTION_BACK);
                                     }
                                     Thread.sleep(3000);
-                                    System.out.println("j isssss" + j);
                                     if (j == 2) {
                                         Toast.makeText(MyAccessibilityService.this, "Unable to do the action correctly, please help us do it", Toast.LENGTH_LONG).show();
 
-                                        Toast.makeText(MyAccessibilityService.this, "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
+                                        actionHint = action.getString("action_hint");
+
+                                        Toast.makeText(getApplicationContext(), "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
 //                                        Toast.makeText(MyAccessibilityService.this,"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
 
                                         // alert dialog
 
-//                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
-//                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                        getApplication().startActivity(dialogIntent);
+                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
+                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        getApplication().startActivity(dialogIntent);
 
                                         paused = true;
                                         currentActionIndex = i + 1;
