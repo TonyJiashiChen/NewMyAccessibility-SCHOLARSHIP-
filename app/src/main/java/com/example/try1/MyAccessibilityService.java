@@ -13,6 +13,8 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,10 +52,9 @@ public class MyAccessibilityService extends AccessibilityService{
 
     public static String actionHint;
 
-    AlertDialogActivity alert;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
-    HomeFragment homeFragment;
-    MainActivity mainActivity;
+    AlertDialogActivity alert;
 
     public MyAccessibilityService() {
 
@@ -282,6 +283,8 @@ public class MyAccessibilityService extends AccessibilityService{
                         JSONObject action = jsonArray.getJSONObject(i);
                         String act_type = action.getString("act_type");
                         Log.i("detected_actions", String.valueOf(action));
+                        int height = Integer.parseInt(action.getString("height"));
+                        int width = Integer.parseInt(action.getString("width"));
                         if (act_type.equals("CLICK")) {
                             JSONObject tap = (JSONObject) action.getJSONArray("taps").get(0);
                             float x = tap.getInt("x");
@@ -294,8 +297,8 @@ public class MyAccessibilityService extends AccessibilityService{
                             }
                             else
                             {
-                                //x = ((x/1080)*currentScreenWidth);
-                                //y = ((y/1920)*currentScreenHeight);
+                                x = ((x/width)*currentScreenWidth);
+                                y = ((y/height)*currentScreenHeight);
                                 System.out.println("x: " + x + " y: " + y);
                             }
 
@@ -337,17 +340,20 @@ public class MyAccessibilityService extends AccessibilityService{
                                     similarity = Math.max(similarCharacterCount * 100 / result.length(), similarCharacterCount * 100 / content.length());
                                 }
                                 System.out.println("Similarity wtih current page= " + similarity + "%\n");
+
                                 Toast.makeText(MyAccessibilityService.this, "Taped on" + findContent(targetList.get(j), ""), Toast.LENGTH_LONG);
 
                                 Log.i("detected_actions", "Taped on " + findContent(targetList.get(j), ""));
                                 Log.i("detected_actions", "Similarity = " + similarity);
                                 Log.i("detected_actions", "                  ");
 
-                                System.out.println("similarity issssssssssss:" + similarity);
-
                                 if (similarity < 85) {
-                                    System.out.println("we are on the wrong screen");
-                                    Toast.makeText(MyAccessibilityService.this, "Wrong screen", Toast.LENGTH_LONG).show(); // debugging
+                                    System.out.println("we are on the wrong screennnnnnnnnnnn");
+
+                                    Toast.makeText(getBaseContext(), "Wrong screen", Toast.LENGTH_SHORT).show();
+
+
+
                                     // if similarity less than 90 then
                                     //System.out.println("Wrong tab");
                                     similarCharacterCount = lcsCount(previousScreenContent, content);
@@ -364,18 +370,22 @@ public class MyAccessibilityService extends AccessibilityService{
                                     }
                                     Thread.sleep(3000);
                                     if (j == 2) {
-                                        Toast.makeText(MyAccessibilityService.this, "Unable to do the action correctly, please help us do it", Toast.LENGTH_LONG).show();
+                                        System.out.println("weare before help");
 
-                                        actionHint = action.getString("action_hint");
+                                        Toast.makeText(getBaseContext(), "Unable to do the action correctly, please help us do it", Toast.LENGTH_SHORT).show();
 
-                                        Toast.makeText(getApplicationContext(), "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
+                                        //actionHint = action.getString("action_hint");
+                                        Toast.makeText(getBaseContext(), "Action hint is " + action.getString("action_hint"), Toast.LENGTH_LONG).show();
+
+
+
 //                                        Toast.makeText(MyAccessibilityService.this,"We are in the wrong page abort, and pls help us go to the correct page", Toast.LENGTH_LONG ).show();
 
                                         // alert dialog
 
-                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
-                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        getApplication().startActivity(dialogIntent);
+//                                        Intent dialogIntent = new Intent(getApplicationContext(), AlertDialogActivity.class);
+//                                        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        getApplication().startActivity(dialogIntent);
 
                                         paused = true;
                                         currentActionIndex = i + 1;
