@@ -35,8 +35,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_NAME +
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                         COLUMN_NAME + " TEXT, " +
-                        COLUMN_SCREEN_SIZE + " TEXT, " +
-                        COLUMN_ADDRESS + " TEXT);";
+                        COLUMN_ADDRESS + " TEXT, " +
+                        COLUMN_SCREEN_SIZE + " TEXT);";
         db.execSQL(query);
     }
 

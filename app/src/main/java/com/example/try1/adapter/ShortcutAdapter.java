@@ -61,8 +61,8 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
     public void onBindViewHolder(@NonNull ShortcutViewHolder holder, int position) {
 
         //holder.shortcutImage.setImageResource(shortcutList.get(position).getImageUrl());
-        holder.name.setText(shortcutList.get(position).getName());
-        holder.restorantName.setText(shortcutList.get(position).getRestorantname());
+        holder.name.setText(shortcutList.get(position).getRestorantname());
+        //holder.restorantName.setText(shortcutList.get(position).getRestorantname());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
 
             //shortcutImage = itemView.findViewById(R.id.shortcut_image);
             name = itemView.findViewById(R.id.name);
-            restorantName = itemView.findViewById(R.id.restorant_name);
+            //restorantName = itemView.findViewById(R.id.restorant_name);
 
 
             itemView.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
