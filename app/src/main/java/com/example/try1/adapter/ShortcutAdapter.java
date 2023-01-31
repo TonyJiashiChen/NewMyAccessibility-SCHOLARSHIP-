@@ -1,6 +1,7 @@
 package com.example.try1.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.try1.HomeFragment;
 import com.example.try1.R;
+import com.example.try1.ShortcutDetailsActivity;
 import com.example.try1.model.Shortcut;
+
+import org.w3c.dom.Text;
 
 import java.sql.SQLOutput;
 import java.util.List;
@@ -21,6 +25,7 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
 
     Context context;
     List<Shortcut> shortcutList;
+
 
     static HomeFragment newHome = new HomeFragment();
 
@@ -58,6 +63,18 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
         //holder.shortcutImage.setImageResource(shortcutList.get(position).getImageUrl());
         holder.name.setText(shortcutList.get(position).getName());
         holder.restorantName.setText(shortcutList.get(position).getRestorantname());
+
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(context, ShortcutDetailsActivity.class);
+                context.startActivity(i);
+
+            }
+        });
 
     }
 
