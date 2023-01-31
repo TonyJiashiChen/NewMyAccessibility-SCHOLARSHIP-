@@ -56,9 +56,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_SCREEN_SIZE, screenSize);
         long result = db.insert(TABLE_NAME, null, cv);
         if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show();
+
         }
     }
 

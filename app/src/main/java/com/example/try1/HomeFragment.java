@@ -603,6 +603,7 @@ public class HomeFragment extends Fragment {
                             System.out.println(screenSize+"everything is fucking fine");
                             myDB = new DatabaseHelper(getContext());
                             myDB.addShortcut(vidName, selectedImagePath, screenSize);
+                            Toast.makeText(getContext(), "Added successfully", Toast.LENGTH_SHORT).show();
                             Log.i("Json", screenSize);
                             break;
                         }

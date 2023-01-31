@@ -65,7 +65,6 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
         holder.restorantName.setText(shortcutList.get(position).getRestorantname());
 
 
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +73,7 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
 
                 i.putExtra("videoName", shortcutList.get(holder.getAdapterPosition()).getName());
                 i.putExtra("videoAddress", shortcutList.get(holder.getAdapterPosition()).getRestorantname());
+                i.putExtra("screenSize", shortcutList.get(holder.getAdapterPosition()).getScreenSize());
 
                 context.startActivity(i);
 
