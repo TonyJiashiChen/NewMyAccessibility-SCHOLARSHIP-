@@ -95,9 +95,11 @@ public class HomeFragment extends Fragment {
     //attributes
     private static final int PERMISSION_REQUEST_CODE = 1;
     public static String selectedImagePath;
+
+    String screenSize;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    static String ipv4AddressAndPort = "118.139.29.130:5000";
+    static String ipv4AddressAndPort = "118.138.90.123:5000";
     static RequestBody requestBody;
     static String postUrl;
     String getUrl;
@@ -178,16 +180,6 @@ public class HomeFragment extends Fragment {
         homeExploreRecycler.setAdapter(homeExploreAdapter);
 
 
-
-
-        shortcutList.add(new Shortcut("Open android store", "Store opener"));
-        shortcutList.add(new Shortcut("Order Chicago pizza","Chicago Pizza"));
-        shortcutList.add(new Shortcut("Back to main page", "Main"));
-        shortcutList.add(new Shortcut("Turn up volume","Volume up"));
-        shortcutList.add(new Shortcut("Call mum", "Action 3"));
-        shortcutList.add(new Shortcut("Call dad", "Action 4"));
-
-
         shortcutRecycler = view.findViewById(R.id.shortcut_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         shortcutRecycler.setLayoutManager(layoutManager);
@@ -208,10 +200,10 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 String[] pathParts = selectedImagePath.split("/");
                 String vidName = pathParts[pathParts.length - 1];
-
-                myDB = new DatabaseHelper(getContext());
-                myDB.addShortcut(vidName, selectedImagePath);
                 uploadVideo(view);
+
+
+
             }
         });
 
@@ -228,7 +220,7 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
-                shortcutList.add(new Shortcut(cursor.getString(2), cursor.getString(1)));
+                shortcutList.add(new Shortcut(cursor.getString(2), cursor.getString(1), cursor.getString(3)));
             }
         }
     }
@@ -367,12 +359,7 @@ public class HomeFragment extends Fragment {
 //        RequestBody postBody = new FormBody.Builder().add("value","hello").build();
 //        postRequest(postUrl, postBody);
         System.out.println(selectedImagePath);
-        String[] pathParts = selectedImagePath.split("/");
-        System.out.println("this is vid name>>>>>>>");
-        String vidName = pathParts[pathParts.length - 1];
-        System.out.println(vidName);
 
-        shortcutList.add(new Shortcut(vidName, selectedImagePath));
         if (selectedImagePath != null) {
             File file = new File(selectedImagePath);
             try {
@@ -393,11 +380,8 @@ public class HomeFragment extends Fragment {
     }
 
 
-    void postRequest(String postUrl, RequestBody postBody) {
+    void postRequest(String postUrl, RequestBody postBody) throws JSONException {
         OkHttpClient client = new OkHttpClient();
-
-        System.out.println(postUrl);
-        System.out.println(postBody);
 
         Request request = new Request.Builder()
                 .url(postUrl)
@@ -449,13 +433,33 @@ public class HomeFragment extends Fragment {
                             responseText.setText(responseTxt);
                             Toast.makeText(getActivity().getApplicationContext(), responseText.getText().toString(), Toast.LENGTH_LONG).show();
                             checkProgress(null);
+
+
                         } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
                     }
-                });
+
+                }
+
+                );
             }
         });
+
+
+    }
+
+    public String getScreenSize() throws JSONException {
+        SharedPreferences sharedPref = getContext().getSharedPreferences("ACTIONS", 0);
+        String detectedActions = sharedPref.getString("ACTION_RESULT", "default");
+
+        JSONArray jsonArray = new JSONArray(detectedActions);
+        JSONObject action = jsonArray.getJSONObject(0);
+
+        String height = action.getString("height");
+        String width = action.getString("width");
+
+        return width+" * "+height;
     }
 
     public void selectVideo(View v) {
@@ -586,6 +590,20 @@ public class HomeFragment extends Fragment {
                             editor.putString("ACTION_RESULT", actions.toString());
                             editor.apply();
                             Log.i("Json", "state is success, result saved");
+
+                            screenSize = getScreenSize();
+
+                            String[] pathParts = selectedImagePath.split("/");
+                            System.out.println("this is vid name>>>>>>>");
+                            String vidName = pathParts[pathParts.length - 1];
+                            System.out.println(vidName);
+
+                            shortcutList.add(new Shortcut(vidName, selectedImagePath, screenSize));
+
+                            System.out.println(screenSize+"everything is fucking fine");
+                            myDB = new DatabaseHelper(getContext());
+                            myDB.addShortcut(vidName, selectedImagePath, screenSize);
+                            Log.i("Json", screenSize);
                             break;
                         }
 

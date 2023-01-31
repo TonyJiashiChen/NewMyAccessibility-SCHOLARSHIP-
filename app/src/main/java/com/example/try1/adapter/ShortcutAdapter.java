@@ -71,6 +71,10 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
             public void onClick(View view) {
 
                 Intent i = new Intent(context, ShortcutDetailsActivity.class);
+
+                i.putExtra("videoName", shortcutList.get(holder.getAdapterPosition()).getName());
+                i.putExtra("videoAddress", shortcutList.get(holder.getAdapterPosition()).getRestorantname());
+
                 context.startActivity(i);
 
             }

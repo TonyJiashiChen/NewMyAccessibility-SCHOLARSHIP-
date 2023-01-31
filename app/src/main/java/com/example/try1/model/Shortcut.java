@@ -5,10 +5,24 @@ public class Shortcut {
     //Integer imageUrl;
     String restorantname;
 
-    public Shortcut(String name, String restorantname) {
+    String screenSize;
+
+//    String height;
+//    String width;
+
+    public Shortcut(String name, String restorantname, String screenSize) {
         this.name = name;
         //this.imageUrl = imageUrl;
         this.restorantname = restorantname;
+        this.screenSize = screenSize;
+    }
+
+    public String getScreenSize() {
+        return screenSize;
+    }
+
+    public void setScreenSize(String screenSize) {
+        this.screenSize = screenSize;
     }
 
     public String getName() {

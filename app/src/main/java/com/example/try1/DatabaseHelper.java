@@ -22,6 +22,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NAME = "video_name";
     private static final String COLUMN_ADDRESS = "video_address";
 
+    private static final String COLUMN_SCREEN_SIZE = "screen_size";
+
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -33,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_NAME +
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                         COLUMN_NAME + " TEXT, " +
+                        COLUMN_SCREEN_SIZE + " TEXT, " +
                         COLUMN_ADDRESS + " TEXT);";
         db.execSQL(query);
     }
@@ -44,12 +47,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    void addShortcut(String name, String address) {
+    void addShortcut(String name, String address, String screenSize) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, name);
         cv.put(COLUMN_ADDRESS, address);
+        cv.put(COLUMN_SCREEN_SIZE, screenSize);
         long result = db.insert(TABLE_NAME, null, cv);
         if (result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
