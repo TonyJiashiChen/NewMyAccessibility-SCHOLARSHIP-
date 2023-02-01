@@ -19,6 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".UploadDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ShortcutDetailsActivity"
             android:exported="false" />
         <activity

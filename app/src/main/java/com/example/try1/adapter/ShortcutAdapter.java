@@ -61,7 +61,7 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
     public void onBindViewHolder(@NonNull ShortcutViewHolder holder, int position) {
 
         //holder.shortcutImage.setImageResource(shortcutList.get(position).getImageUrl());
-        holder.name.setText(shortcutList.get(position).getRestorantname());
+        holder.name.setText(shortcutList.get(position).getName());
         //holder.restorantName.setText(shortcutList.get(position).getRestorantname());
 
 
@@ -74,6 +74,7 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
                 i.putExtra("videoName", shortcutList.get(holder.getAdapterPosition()).getName());
                 i.putExtra("videoAddress", shortcutList.get(holder.getAdapterPosition()).getRestorantname());
                 i.putExtra("screenSize", shortcutList.get(holder.getAdapterPosition()).getScreenSize());
+                i.putExtra("actions", shortcutList.get(holder.getAdapterPosition()).getActions());
 
                 context.startActivity(i);
 

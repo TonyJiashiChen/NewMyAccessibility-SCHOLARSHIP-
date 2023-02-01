@@ -6,15 +6,24 @@ public class Shortcut {
     String restorantname;
 
     String screenSize;
-
+    String actions;
 //    String height;
 //    String width;
 
-    public Shortcut(String name, String restorantname, String screenSize) {
+    public Shortcut(String name, String restorantname, String screenSize, String actions) {
         this.name = name;
         //this.imageUrl = imageUrl;
         this.restorantname = restorantname;
         this.screenSize = screenSize;
+        this.actions = actions;
+    }
+
+    public String getActions() {
+        return actions;
+    }
+
+    public void setActions(String actions) {
+        this.actions = actions;
     }
 
     public String getScreenSize() {

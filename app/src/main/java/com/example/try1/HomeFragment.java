@@ -97,6 +97,7 @@ public class HomeFragment extends Fragment {
     public static String selectedImagePath;
 
     String screenSize;
+    String detectedActions;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
     static String ipv4AddressAndPort = "118.138.90.123:5000";
@@ -220,7 +221,7 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
-                shortcutList.add(new Shortcut(cursor.getString(2), cursor.getString(1), cursor.getString(3)));
+                shortcutList.add(new Shortcut(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4)));
             }
         }
     }
@@ -462,6 +463,13 @@ public class HomeFragment extends Fragment {
         return width+" * "+height;
     }
 
+    public String getDetectedActions() {
+        SharedPreferences sharedPref = getContext().getSharedPreferences("ACTIONS", 0);
+        String detectedActions = sharedPref.getString("ACTION_RESULT", "default");
+
+        return detectedActions;
+    }
+
     public void selectVideo(View v) {
         System.out.println("we are on select video");
         if (Build.VERSION.SDK_INT >= 23) {
@@ -592,17 +600,27 @@ public class HomeFragment extends Fragment {
                             Log.i("Json", "state is success, result saved");
 
                             screenSize = getScreenSize();
+                            detectedActions = getDetectedActions();
 
                             String[] pathParts = selectedImagePath.split("/");
                             System.out.println("this is vid name>>>>>>>");
                             String vidName = pathParts[pathParts.length - 1];
                             System.out.println(vidName);
 
-                            shortcutList.add(new Shortcut(vidName, selectedImagePath, screenSize));
+                            shortcutList.add(new Shortcut(vidName, selectedImagePath, screenSize, detectedActions));
 
-                            System.out.println(screenSize+"everything is fucking fine");
+                            Intent i = new Intent(getContext(), UploadDetailActivity.class);
+
+                            i.putExtra("uploadVideoName", vidName);
+                            i.putExtra("uploadVideoAddress", selectedImagePath);
+                            i.putExtra("uploadScreenSize", screenSize);
+                            i.putExtra("uploadActions", detectedActions);
+
+                            getContext().startActivity(i);
+
+
                             myDB = new DatabaseHelper(getContext());
-                            myDB.addShortcut(vidName, selectedImagePath, screenSize);
+                            myDB.addShortcut(vidName, selectedImagePath, screenSize, detectedActions);
                             Toast.makeText(getContext(), "Added successfully", Toast.LENGTH_SHORT).show();
                             Log.i("Json", screenSize);
                             break;

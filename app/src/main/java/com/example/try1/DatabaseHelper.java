@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ADDRESS = "video_address";
 
     private static final String COLUMN_SCREEN_SIZE = "screen_size";
+    private static final String COLUMN_ACTIONS = "actions";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                         COLUMN_NAME + " TEXT, " +
                         COLUMN_ADDRESS + " TEXT, " +
+                        COLUMN_ACTIONS + " TEXT, " +
                         COLUMN_SCREEN_SIZE + " TEXT);";
         db.execSQL(query);
     }
@@ -47,12 +49,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    void addShortcut(String name, String address, String screenSize) {
+    void addShortcut(String name, String address, String screenSize, String actions) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, name);
         cv.put(COLUMN_ADDRESS, address);
+        cv.put(COLUMN_ACTIONS, actions);
         cv.put(COLUMN_SCREEN_SIZE, screenSize);
         long result = db.insert(TABLE_NAME, null, cv);
         if (result == -1) {
