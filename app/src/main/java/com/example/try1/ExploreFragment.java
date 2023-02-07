@@ -79,18 +79,15 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
         List<Explore> exploreList = new ArrayList<>();
-        exploreList.add(new Explore("Turn on camera", "Action 1", R.drawable.asiafood1));
-        exploreList.add(new Explore("Open android store", "Store opener", R.drawable.asiafood2));
-        exploreList.add(new Explore("Order Chicago pizza from domino's","Chicago Pizza", R.drawable.asiafood1));
-        exploreList.add(new Explore("Back to main page", "Main", R.drawable.asiafood2));
-        exploreList.add(new Explore("Turn up volume","Volume up", R.drawable.asiafood1));
-        exploreList.add(new Explore("Call mum", "Action 3", R.drawable.asiafood2));
-        exploreList.add(new Explore("Call dad", "Action 4", R.drawable.asiafood1));
+        exploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU"));
+        exploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU"));
+
 
 
         exploreRecycler = view.findViewById(R.id.explore_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         exploreRecycler.setLayoutManager(layoutManager);
+        exploreRecycler.setHasFixedSize(true);
         exploreAdapter = new ExploreAdapter(getContext(), exploreList);
         exploreRecycler.setAdapter(exploreAdapter);
     }

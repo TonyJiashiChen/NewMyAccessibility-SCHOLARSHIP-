@@ -2,33 +2,25 @@ package com.example.try1.model;
 
 public class Explore {
 
-    String name;
-    Integer imageUrl;
-    String restorantname;
+//    String name;
+//    Integer imageUrl;
+//    String restorantname;
 
-    public Explore(String name, String restorantname, Integer imageUrl) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.restorantname = restorantname;
+    String link;
+
+    public Explore(String link) {
+        this.link = link;
     }
 
-    public String getName() {
-        return name;
+    public Explore() {
+
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLink() {
+        return link;
     }
 
-    public String getRestorantname() {
-        return restorantname;
+    public void setLink(String link) {
+        this.link = link;
     }
-
-    public void setRestorantname(String restorantname) {
-        this.restorantname = restorantname;
-    }
-
-    public Integer getImageUrl() {return imageUrl;}
-
-    public void setImageUrl(Integer imageUrl) {this.imageUrl = imageUrl;}
 }

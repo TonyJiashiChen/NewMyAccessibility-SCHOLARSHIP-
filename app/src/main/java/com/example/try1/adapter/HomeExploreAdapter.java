@@ -34,8 +34,8 @@ public class HomeExploreAdapter extends RecyclerView.Adapter<HomeExploreAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull HomeExploreViewHolder holder, int position) {
-        holder.image.setImageResource(homeExploreList.get(position).getImageUrl());
-        holder.name.setText(homeExploreList.get(position).getName());
+//        holder.image.setImageResource(homeExploreList.get(position).getImageUrl());
+//        holder.name.setText(homeExploreList.get(position).getName());
 
     }
 

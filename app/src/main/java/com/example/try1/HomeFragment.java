@@ -170,9 +170,9 @@ public class HomeFragment extends Fragment {
         storeData();
 
 
-        homeExploreList.add(new Explore("Turn on camera", "Action 1", R.drawable.asiafood1));
-        homeExploreList.add(new Explore("Open android store", "Store opener", R.drawable.asiafood2));
-        homeExploreList.add(new Explore("Order Chicago pizza from domino's","Chicago Pizza", R.drawable.asiafood1));
+//        homeExploreList.add(new Explore("Turn on camera", "Action 1", R.drawable.asiafood1));
+//        homeExploreList.add(new Explore("Open android store", "Store opener", R.drawable.asiafood2));
+//        homeExploreList.add(new Explore("Order Chicago pizza from domino's","Chicago Pizza", R.drawable.asiafood1));
 
         homeExploreRecycler = view.findViewById(R.id.home_explore_recycler);
         RecyclerView.LayoutManager homeLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -217,7 +217,7 @@ public class HomeFragment extends Fragment {
 
     void storeData() {
         Cursor cursor = myDB.readAllData();
-        if (cursor.getCount() == 0) {
+        if (cursor==null || cursor.getCount() == 0) {
             Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
