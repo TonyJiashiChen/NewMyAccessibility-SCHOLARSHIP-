@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
+//
     public Context context;
     private static final String DATABASE_NAME = "Shortcut.db";
     private static final int DATABASE_VERSION = 1;
