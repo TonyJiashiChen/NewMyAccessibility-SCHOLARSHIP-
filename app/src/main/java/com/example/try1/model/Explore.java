@@ -7,9 +7,12 @@ public class Explore {
 //    String restorantname;
 
     String link;
+    String downloadLink;
 
-    public Explore(String link) {
+
+    public Explore(String link, String downloadLink) {
         this.link = link;
+        this.downloadLink = downloadLink;
     }
 
     public Explore() {
@@ -22,5 +25,13 @@ public class Explore {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getDownloadLink() {
+        return downloadLink;
+    }
+
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
     }
 }

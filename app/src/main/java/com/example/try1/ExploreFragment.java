@@ -79,8 +79,8 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
         List<Explore> exploreList = new ArrayList<>();
-        exploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU"));
-        exploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU"));
+        exploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
+        exploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
 
 
 
