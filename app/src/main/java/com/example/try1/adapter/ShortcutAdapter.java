@@ -16,6 +16,9 @@ import com.example.try1.R;
 import com.example.try1.ShortcutDetailsActivity;
 import com.example.try1.model.Shortcut;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.sql.SQLOutput;
@@ -73,8 +76,27 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
 
                 i.putExtra("videoName", shortcutList.get(holder.getAdapterPosition()).getName());
                 i.putExtra("videoAddress", shortcutList.get(holder.getAdapterPosition()).getRestorantname());
-                i.putExtra("screenSize", shortcutList.get(holder.getAdapterPosition()).getScreenSize());
+
                 i.putExtra("actions", shortcutList.get(holder.getAdapterPosition()).getActions());
+
+
+                String extractedAction = "";
+
+                String actions = shortcutList.get(holder.getAdapterPosition()).getScreenSize();
+                System.out.println(actions);
+                try {
+                    JSONArray metaData = new JSONArray(actions);
+                    int n = metaData.length();
+                    for (int x=0; x<n; ++x) {
+                        JSONObject singleAction = metaData.getJSONObject(x);
+                        extractedAction = extractedAction + singleAction.getString("act_type") + " ";
+                        extractedAction = extractedAction + singleAction.getString("taps") + ", ";
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                i.putExtra("screenSize", extractedAction);
 
                 context.startActivity(i);
 
