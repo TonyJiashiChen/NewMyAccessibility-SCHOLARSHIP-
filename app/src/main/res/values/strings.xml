@@ -19,4 +19,8 @@
     <string name="food">food</string>
     <string name="download">Download</string>
     <string name="ExploreVideos">Explore Videos</string>
+    <string name="videoname">Video Name</string>
+    <string name="va">Video Address</string>
+    <string name="actions">Actions</string>
+    <string name="ss">Screen Size</string>
 </resources>

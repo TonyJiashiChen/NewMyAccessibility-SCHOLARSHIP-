@@ -207,9 +207,6 @@ public class HomeFragment extends Fragment {
                 String[] pathParts = selectedImagePath.split("/");
                 String vidName = pathParts[pathParts.length - 1];
                 uploadVideo(view);
-
-
-
             }
         });
 
@@ -400,6 +397,9 @@ public class HomeFragment extends Fragment {
                 call.cancel();
 
                 // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+
+                if(getActivity() == null)
+                    return;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -452,6 +452,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+    }
+
+    public void homeUpload() {
 
     }
 

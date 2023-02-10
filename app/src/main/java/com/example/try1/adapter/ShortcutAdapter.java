@@ -2,11 +2,15 @@ package com.example.try1.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +70,16 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
         //holder.shortcutImage.setImageResource(shortcutList.get(position).getImageUrl());
         holder.name.setText(shortcutList.get(position).getName());
         //holder.restorantName.setText(shortcutList.get(position).getRestorantname());
-
+        holder.upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPref = context.getSharedPreferences("ACTIONS", 0);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("ACTION_RESULT", shortcutList.get(holder.getAdapterPosition()).getScreenSize());
+                editor.apply();
+                System.out.println("explore upload button clicked");
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +116,7 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
             }
         });
 
+
     }
 
     @Override
@@ -114,6 +128,8 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
 
         //ImageView shortcutImage;
         TextView name, restorantName;
+        Button upload;
+        VideoView videoView;
 
         public ShortcutViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,16 +137,17 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
             //shortcutImage = itemView.findViewById(R.id.shortcut_image);
             name = itemView.findViewById(R.id.name);
             //restorantName = itemView.findViewById(R.id.restorant_name);
+            upload = itemView.findViewById(R.id.action);
+            videoView = itemView.findViewById(R.id.shortcut_video_view);
 
-
-            itemView.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    HomeFragment.selectedImagePath = (String) name.getText();
-                    System.out.println(HomeFragment.selectedImagePath);
-                    newHome.uploadVideo(view);
-                }
-            });
+//            itemView.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    HomeFragment.selectedImagePath = (String) name.getText();
+//                    System.out.println(HomeFragment.selectedImagePath);
+//                    newHome.uploadVideo(view);
+//                }
+//            });
 
         }
     }

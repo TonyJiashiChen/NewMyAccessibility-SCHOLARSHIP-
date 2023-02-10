@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 public class ShortcutDetailsActivity extends AppCompatActivity {
 
@@ -12,6 +14,7 @@ public class ShortcutDetailsActivity extends AppCompatActivity {
     TextView textVideoAddress;
     TextView textScreenSize;
     TextView textActions;
+    VideoView videoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,8 @@ public class ShortcutDetailsActivity extends AppCompatActivity {
         textVideoAddress = findViewById(R.id.videoAddress);
         textActions = findViewById(R.id.actions);
         textScreenSize = findViewById(R.id.screenSize);
+        videoView = findViewById(R.id.shortcut_video_view);
+
 
         Intent i = getIntent();
         String videoName = i.getStringExtra("videoName");
@@ -32,5 +37,11 @@ public class ShortcutDetailsActivity extends AppCompatActivity {
         textVideoAddress.setText(videoAddress);
         textActions.setText(actions);
         textScreenSize.setText(screenSize);
+
+
+        videoView.setVideoPath(videoAddress);
+        MediaController mediaController = new MediaController(this);
+        videoView.setMediaController(mediaController);
+        mediaController.setAnchorView(videoView);
     }
 }
