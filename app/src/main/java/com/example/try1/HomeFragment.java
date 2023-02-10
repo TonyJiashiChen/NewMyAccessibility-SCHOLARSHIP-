@@ -1,5 +1,8 @@
 package com.example.try1;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -9,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +35,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -170,9 +175,9 @@ public class HomeFragment extends Fragment {
         storeData();
 
 
-//        homeExploreList.add(new Explore("Turn on camera", "Action 1", R.drawable.asiafood1));
-//        homeExploreList.add(new Explore("Open android store", "Store opener", R.drawable.asiafood2));
-//        homeExploreList.add(new Explore("Order Chicago pizza from domino's","Chicago Pizza", R.drawable.asiafood1));
+        homeExploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
+        homeExploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
+        homeExploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
 
         homeExploreRecycler = view.findViewById(R.id.home_explore_recycler);
         RecyclerView.LayoutManager homeLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -536,21 +541,47 @@ public class HomeFragment extends Fragment {
 //    }
 
 
+
     private void requestPermission() {
-        System.out.println("we are on requestpermission");
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            System.out.println("is asking for context, the problem is next line");
-            Toast.makeText(getActivity().getApplicationContext(), "Please Give Permission to Upload File", Toast.LENGTH_SHORT).show();
+//        System.out.println("we are on requestpermission");
+//        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.MANAGE_EXTERNAL_STORAGE)) {
+//            System.out.println("is asking for context, the problem is next line");
+//            Toast.makeText(getActivity().getApplicationContext(), "Please Give Permission to Upload File", Toast.LENGTH_SHORT).show();
+//        } else {
+//            System.out.println("is asking");
+//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.MANAGE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+//        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s",getActivity().getApplicationContext().getPackageName())));
+                startActivityForResult(intent, 2296);
+            } catch (Exception e) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, 2296);
+            }
         } else {
-            System.out.println("is asking");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            //below android 11
+            ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
         }
     }
 
+
     private boolean checkPermission() {
-        System.out.println("we are on check permission");
-        int result = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED;
+//        System.out.println("we are on check permission");
+//        int result = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+//        return result == PackageManager.PERMISSION_GRANTED;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+        }
     }
 
     @Override
