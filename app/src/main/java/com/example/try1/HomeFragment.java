@@ -174,9 +174,9 @@ public class HomeFragment extends Fragment {
 
         storeData();
 
-
-        homeExploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
-        homeExploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
+        homeExploreList.add(new Explore("https://youtu.be/uGIWqhZZqrE", "https://youtu.be/uGIWqhZZqrE"));
+        homeExploreList.add(new Explore("https://youtu.be/y4bUudkTqaE", "https://youtu.be/y4bUudkTqaE"));
+        homeExploreList.add(new Explore("https://youtu.be/jPq_mu8n6OU", "https://youtu.be/jPq_mu8n6OU"));
         homeExploreList.add(new Explore("https://www.youtube.com/embed/qy4jpm1OrzU", "https://youtu.be/qy4jpm1OrzU"));
 
         homeExploreRecycler = view.findViewById(R.id.home_explore_recycler);

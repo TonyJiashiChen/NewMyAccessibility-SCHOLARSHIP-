@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.ShortcutViewHolder> {
@@ -103,14 +104,19 @@ public class ShortcutAdapter extends RecyclerView.Adapter<ShortcutAdapter.Shortc
                     for (int x=0; x<n; ++x) {
                         JSONObject singleAction = metaData.getJSONObject(x);
                         extractedAction = extractedAction + singleAction.getString("act_type") + " ";
-                        extractedAction = extractedAction + singleAction.getString("taps") + ", ";
+                        ArrayList<String> list = new ArrayList<String>();
+                        JSONArray actionPiece = singleAction.getJSONArray("taps");
+                        for(int y=0;y<1;y++) {
+                            list.add(actionPiece.get(y).toString());
+                        }
+                        extractedAction = extractedAction + list.get(0) + ", ";
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
 
                 i.putExtra("screenSize", extractedAction);
-
+                i.putExtra("actual_action", shortcutList.get(holder.getAdapterPosition()).getScreenSize());
                 context.startActivity(i);
 
             }
