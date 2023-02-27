@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
     String detectedActions;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    static String ipv4AddressAndPort = "118.138.90.123:5000";
+    static String ipv4AddressAndPort = "118.138.107.201:5000";
     static RequestBody requestBody;
     static String postUrl;
     String getUrl;
@@ -364,7 +364,15 @@ public class HomeFragment extends Fragment {
         System.out.println(selectedImagePath);
 
         if (selectedImagePath != null) {
+
             File file = new File(selectedImagePath);
+
+            Intent i = new Intent(getContext(), UploadActivity.class);
+
+            i.putExtra("imagePath", selectedImagePath);
+
+            getContext().startActivity(i);
+
             try {
                 requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
