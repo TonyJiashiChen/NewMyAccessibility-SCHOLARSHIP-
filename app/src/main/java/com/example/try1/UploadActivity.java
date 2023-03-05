@@ -2,6 +2,7 @@ package com.example.try1;
 
 import static com.example.try1.HomeFragment.ipv4AddressAndPort;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.try1.model.Shortcut;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,8 @@ public class UploadActivity extends AppCompatActivity {
 
 
     static RequestBody requestBody;
+
+    String getUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +124,7 @@ public class UploadActivity extends AppCompatActivity {
                                                             responseTxt = "Successfully uploaded. Please wait the video to be process";
                                                             statusId = json.getJSONObject(1);
                                                             Log.i("Json", statusId.getString("Location"));
-                                                            String getUrl = "http://" + ipv4AddressAndPort + "/" + statusId.getString("Location");
+                                                            getUrl = "http://" + ipv4AddressAndPort + "/" + statusId.getString("Location");
 
                                                             // save to shared preferences
                                                             SharedPreferences sharedPref = getSharedPreferences("ACTIONS", 0);
@@ -129,7 +134,7 @@ public class UploadActivity extends AppCompatActivity {
                                                         }
                                                         progress.setText(responseTxt);
                                                         Toast.makeText(getApplicationContext(), progress.getText().toString(), Toast.LENGTH_LONG).show();
-
+                                                        checkProgress(null);
 
                                                     } catch (JSONException | IOException e) {
                                                         e.printStackTrace();
@@ -142,6 +147,98 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+
+    public void checkProgress(@Nullable View v) throws IOException {
+//        String url_1 = "http://" + ipv4AddressAndPort + "/status/753e71d9-427a-4f50-8527-4fb289b7e42b";
+//        Log.i("Json", getUrl);
+
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    while(true){
+                        String result = getRequest(getUrl);
+                        JSONObject object = new JSONObject(result);
+                        String state = object.getString("state");
+                        Log.i("Json", object.getString("state"));
+
+                        //Your code goes here
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                progress.setText(state);
+                                Toast.makeText(getApplicationContext(), "Result is " + state, Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        if (state.equals("SUCCESS")) {
+                            JSONArray actions = object.getJSONArray("result");
+                            SharedPreferences sharedPref = getSharedPreferences("ACTIONS", 0);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("ACTION_RESULT", actions.toString());
+                            editor.apply();
+                            Log.i("Json", "state is success, result saved");
+
+
+                            break;
+                        }
+
+                        Thread.sleep(30000);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+
+//        while(!result.contains("SUCCESS")){
+//            try
+//            {
+//                Thread.sleep(30000);
+//                result = getRequest(getUrl);
+//            }
+//            catch(InterruptedException ex)
+//            {
+//                Thread.currentThread().interrupt();
+//            }
+//        }
+
+    }
+
+
+    public String getRequest(String url) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+//        final JSONObject[] responseResult = new JSONObject[1];
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Response getResponse = client.newCall(request).execute();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    getResponse.close();
+                    response.close();
+                    // do something wih the result
+                }
+            }
+        });
+        return getResponse.body().string();
 
     }
 

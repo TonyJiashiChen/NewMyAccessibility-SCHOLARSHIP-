@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
     String detectedActions;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    static String ipv4AddressAndPort = "118.138.107.201:5000";
+    static String ipv4AddressAndPort = "192.168.1.2:5000";
     static RequestBody requestBody;
     static String postUrl;
     String getUrl;
@@ -379,7 +379,7 @@ public class HomeFragment extends Fragment {
                         .addFormDataPart("file", file.getName(), RequestBody.create(file, MediaType.parse("video/mp4")))
                         .build();
                 Log.i("Upload", String.valueOf(requestBody.contentType()));
-                postRequest(postUrl, requestBody);
+                //postRequest(postUrl, requestBody);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.i("Upload", "failed");
