@@ -5,13 +5,16 @@ import static com.example.try1.HomeFragment.ipv4AddressAndPort;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.try1.model.Shortcut;
 
@@ -34,11 +37,19 @@ import okhttp3.Response;
 public class UploadActivity extends AppCompatActivity {
 
     TextView progress;
-
-
+    TextView vidAdd;
+    TextView vidName;
+    VideoView newUploadVideo;
     static RequestBody requestBody;
 
     String getUrl;
+    String screenSize;
+    String detectedActions;
+    String imagePath;
+    DatabaseHelper myDB;
+    HomeFragment homeFragment = new HomeFragment();
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +57,34 @@ public class UploadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload);
 
         progress = findViewById(R.id.progress);
+        vidName = findViewById(R.id.newUploadVideoName);
+        vidAdd = findViewById(R.id.newUploadVideoAddress);
+        newUploadVideo = findViewById(R.id.new_upload_video_view);
 
         Intent i = getIntent();
-        String imagePath = i.getStringExtra("imagePath");
+        imagePath = i.getStringExtra("imagePath");
+
+        String[] pathParts = imagePath.split("/");
+        System.out.println("this is vid name>>>>>>>");
+        String editedVidName = pathParts[pathParts.length - 1];
+
+        vidName.setText(editedVidName);
+        vidAdd.setText(imagePath);
+
+        newUploadVideo.setVideoPath(imagePath);
+        MediaController mediaController = new MediaController(this);
+        newUploadVideo.setMediaController(mediaController);
+        mediaController.setAnchorView(newUploadVideo);
 
         uploadVideo(imagePath);
     }
 
+    public UploadActivity() {
+
+    }
+    public UploadActivity(Context context) {
+        this.context = context;
+    }
 
     public void uploadVideo(String imagePath) {
         String postUrl = "http://" + ipv4AddressAndPort + "/";
@@ -183,6 +215,23 @@ public class UploadActivity extends AppCompatActivity {
                             editor.apply();
                             Log.i("Json", "state is success, result saved");
 
+                            screenSize = getScreenSize();
+                            detectedActions = getDetectedActions();
+
+                            String[] pathParts = imagePath.split("/");
+                            System.out.println("this is vid name>>>>>>>");
+                            String vidName = pathParts[pathParts.length - 1];
+                            System.out.println(vidName);
+
+                            homeFragment.shortcutList.add(new Shortcut(vidName, imagePath, screenSize, detectedActions));
+
+                            System.out.println("shortcutlist sizr::::"+homeFragment.shortcutList.size());
+                            myDB = new DatabaseHelper(getApplicationContext());
+                            myDB.addShortcut(vidName, imagePath, screenSize, detectedActions);
+                            Log.i("database", "after saved");
+                            Toast.makeText(getApplicationContext(), "Added successfully", Toast.LENGTH_SHORT).show();
+                            Log.i("Json", screenSize);
+
 
                             break;
                         }
@@ -212,6 +261,26 @@ public class UploadActivity extends AppCompatActivity {
 
     }
 
+
+    public String getScreenSize() throws JSONException {
+        SharedPreferences sharedPref = getSharedPreferences("ACTIONS", 0);
+        String detectedActions = sharedPref.getString("ACTION_RESULT", "default");
+
+        JSONArray jsonArray = new JSONArray(detectedActions);
+        JSONObject action = jsonArray.getJSONObject(0);
+
+        String height = action.getString("height");
+        String width = action.getString("width");
+
+        return width+" * "+height;
+    }
+
+    public String getDetectedActions() {
+        SharedPreferences sharedPref = getSharedPreferences("ACTIONS", 0);
+        String detectedActions = sharedPref.getString("ACTION_RESULT", "default");
+
+        return detectedActions;
+    }
 
     public String getRequest(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();

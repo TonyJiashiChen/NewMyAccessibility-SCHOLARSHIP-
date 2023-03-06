@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
     String detectedActions;
     int REQUEST_CODE = 3;
     EditText ipv4AddressView;
-    static String ipv4AddressAndPort = "192.168.1.2:5000";
+    static String ipv4AddressAndPort = "118.139.61.216:5000";
     static RequestBody requestBody;
     static String postUrl;
     String getUrl;
