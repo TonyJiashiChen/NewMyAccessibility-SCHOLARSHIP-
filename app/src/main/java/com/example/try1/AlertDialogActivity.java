@@ -59,7 +59,7 @@ public class AlertDialogActivity extends AppCompatActivity {
                         moveTaskToBack(true);
 
                     }
-                })
+                })s
                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
